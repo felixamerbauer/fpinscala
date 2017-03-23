@@ -81,17 +81,6 @@ object FormatAbsAndFactorial {
   }
 }
 
-object TestFib {
-
-  import MyModule._
-
-  // test implementation of `fib`
-  def main(args: Array[String]): Unit = {
-    println("Expected: 0, 1, 1, 2, 3, 5, 8")
-    println("Actual:   %d, %d, %d, %d, %d, %d, %d".format(fib(0), fib(1), fib(2), fib(3), fib(4), fib(5), fib(6)))
-  }
-}
-
 // Functions get passed around so often in FP that it's
 // convenient to have syntax for constructing a function
 // *without* having to give it a name
@@ -165,7 +154,7 @@ object PolymorphicFunctions {
   // an `Array[A]` is sorted
   @tailrec
   def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
-    as.length < 2 || (gt(as(0), as(1)) && isSorted(as.drop(2), gt))
+    as.length < 2 || (gt(as(1), as(0)) && isSorted(as.tail, gt))
   }
 
   // Polymorphic functions are often so constrained by their type
