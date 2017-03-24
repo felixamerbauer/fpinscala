@@ -15,8 +15,7 @@ sealed trait Option[+A] {
   }
 
   def flatMap[B](f: A => Option[B]): Option[B] = {
-    val a: Option[Option[B]] = this.map(f)
-    ???
+    this.map(f).getOrElse(None)
   }
 
   def orElse[B >: A](ob: => Option[B]): Option[B] = {
@@ -24,7 +23,7 @@ sealed trait Option[+A] {
   }
 
   def filter(f: A => Boolean): Option[A] = {
-    if(this.map(f).getOrElse(false)) this else None
+    if (this.map(f).getOrElse(false)) this else None
   }
 }
 
@@ -58,11 +57,21 @@ object Option {
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
 
-  def variance(xs: Seq[Double]): Option[Double] = ???
+  def variance(xs: Seq[Double]): Option[Double] = for {
+    m1 <- mean(xs)
+    m2 <- mean(xs.map(e => Math.pow(m1 - e, 2)))
+  } yield m2
 
-  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
+  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    for {
+      ao <- a
+      bo <- b
+    } yield f(ao, bo)
 
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = {
+//    a.flatMap(e => e)
+    ???
+  }
 
   def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
 }
